@@ -6,12 +6,12 @@ function rcnn_exp_cache_features_ilsvrc13(chunk)
 %crop_mode    = 'warp';
 %crop_padding = 16;
 
-%net_file     = '/data1/ILSVRC13/finetune_ilsvrc13_val1_iter_50000';
+%net_file     = './data1/ILSVRC13/finetune_ilsvrc13_val1_iter_50000';
 %cache_name   = 'v1_finetune_val1_iter_50k';
 %crop_mode    = 'warp';
 %crop_padding = 16;
 
-net_file     = '/data1/ILSVRC13/finetune_ilsvrc13_val1+train1k_iter_50000';
+net_file     = './data/caffe_nets/finetune_ilsvrc13_val1+train1k_iter_50000';
 cache_name   = 'v1_finetune_val1+train1k_iter_50k';
 crop_mode    = 'warp';
 crop_padding = 16;
