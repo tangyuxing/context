@@ -28,14 +28,14 @@ ip.addOptional('end', 0, @isscalar);
 ip.addOptional('crop_mode', 'warp', @isstr);
 ip.addOptional('crop_padding', 16, @isscalar);
 ip.addOptional('net_file', ...
-    './data/caffe_nets/caffe_imagenet_full_conv', ...
+    './data/caffe_nets/ilsvrc_2012_train_iter_310k', ...
     @isstr);
 ip.addOptional('cache_name', ...
     'v1_finetune_voc_2007_trainval_iter_70000', @isstr);
 
 ip.parse(imdb, varargin{:});
 opts = ip.Results;
-opts.net_def_file = './model-defs/imagenet_1k_conv.prototxt';
+opts.net_def_file = './model-defs/imagenet_deploy_batch_256_output_fc8.prototxt';
 
 image_ids = imdb.image_ids;
 if opts.end == 0

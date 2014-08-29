@@ -1,4 +1,4 @@
-function res = rcnn_test_sanity(rcnn_model, imdb, suffix)
+function res = rcnn_test_context_sanity(rcnn_model, imdb, suffix)
 % res = rcnn_test(rcnn_model, imdb, suffix)
 %   Compute test results using the trained rcnn_model on the
 %   image database specified by imdb. Results are saved
@@ -65,7 +65,7 @@ catch
       if isempty(d.context)
         continue;
       end
-      d.context = rcnn_scale_features(d.context, feat_opts.feat_norm_mean);
+      d.context = rcnn_scale_features(d.context, feat_opts.context_norm_mean);
       zs = bsxfun(@plus, d.context*rcnn_model.detectors(f).W, rcnn_model.detectors(f).B);
 
       for j = 1:num_classes

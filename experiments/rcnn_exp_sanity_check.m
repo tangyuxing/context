@@ -2,7 +2,7 @@ function [res_test, res_train] = rcnn_exp_sanity_check()
 % Runs an experiment that trains an R-CNN model and tests it.
 
 % -------------------- CONFIG --------------------
-net_file     = './data/caffe_nets/caffe_imagenet_full_conv';
+net_file     = './data/caffe_nets/ilsvrc_2012_train_iter_310k';
 cache_name   = 'v1_finetune_voc_2007_trainval_iter_70k';
 crop_mode    = 'warp';
 crop_padding = 16;
@@ -16,7 +16,7 @@ imdb_train = imdb_from_voc(VOCdevkit, 'trainval', '2007');
 imdb_test = imdb_from_voc(VOCdevkit, 'test', '2007');
 
 [rcnn_model, rcnn_k_fold_model] = ...
-    rcnn_train_sanity(imdb_train, ...
+    rcnn_train_context_sanity(imdb_train, ...
       'k_folds',      k_folds, ...
       'cache_name',   cache_name, ...
       'net_file',     net_file, ...
@@ -24,9 +24,9 @@ imdb_test = imdb_from_voc(VOCdevkit, 'test', '2007');
       'crop_padding', crop_padding);
 
 if k_folds > 0
-  res_train = rcnn_test_sanity(rcnn_k_fold_model, imdb_train);
+  res_train = rcnn_test_context_sanity(rcnn_k_fold_model, imdb_train);
 else
   res_train = [];
 end
 
-res_test = rcnn_test_sanity(rcnn_model, imdb_test);
+res_test = rcnn_test_context_sanity(rcnn_model, imdb_test);

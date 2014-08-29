@@ -1,7 +1,7 @@
 function rcnn_exp_cache_context(chunk)
 
 % -------------------- CONFIG --------------------
-net_file     = './data/caffe_nets/caffe_imagenet_full_conv';
+net_file     = './data/caffe_nets/ilsvrc_2012_train_iter_310k';
 cache_name   = 'v1_finetune_voc_2007_trainval_iter_70k';
 crop_mode    = 'warp';
 crop_padding = 16;

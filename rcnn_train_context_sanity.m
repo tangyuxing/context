@@ -1,5 +1,5 @@
 function [rcnn_model, rcnn_k_fold_model] = ...
-    rcnn_train_sanity(imdb, varargin)
+    rcnn_train_context_sanity(imdb, varargin)
 % [rcnn_model, rcnn_k_fold_model] = rcnn_train(imdb, varargin)
 %   Trains an R-CNN detector for all classes in the imdb.
 %   
@@ -39,7 +39,7 @@ ip.addParamValue('checkpoint',      0,      @isscalar);
 ip.addParamValue('crop_mode',       'warp', @isstr);
 ip.addParamValue('crop_padding',    16,     @isscalar);
 ip.addParamValue('net_file', ...
-    './data/caffe_nets/finetune_voc_2007_trainval_iter_70k', ...
+    './data/caffe_nets/ilsvrc_2012_train_iter_310k', ...
     @isstr);
 ip.addParamValue('cache_name', ...
     'v1_finetune_voc_2007_trainval_iter_70000', @isstr);
@@ -48,7 +48,7 @@ ip.addParamValue('cache_name', ...
 ip.parse(imdb, varargin{:});
 opts = ip.Results;
 
-opts.net_def_file = './model-defs/rcnn_batch_256_output_fc7.prototxt';
+opts.net_def_file = './model-defs/imagenet_deploy_batch_256_output_fc8.prototxt';
 
 conf = rcnn_config('sub_dir', imdb.name);
 
@@ -74,8 +74,8 @@ rcnn_model.classes = imdb.classes;
 
 % ------------------------------------------------------------------------
 % Get the average norm of the features
-opts.feat_norm_mean = rcnn_context_stats(imdb, rcnn_model);
-fprintf('average norm = %.3f\n', opts.feat_norm_mean);
+opts.context_norm_mean = rcnn_context_stats(imdb, rcnn_model);
+fprintf('average context norm = %.3f\n', opts.context_norm_mean);
 rcnn_model.training_opts = opts;
 % ------------------------------------------------------------------------
 
@@ -97,7 +97,7 @@ caches = {};
 for i = imdb.class_ids
   fprintf('%14s has %6d positive instances\n', ...
       imdb.classes{i}, size(X_pos{i},1));
-  X_pos{i} = rcnn_scale_features(X_pos{i}, opts.feat_norm_mean);
+  X_pos{i} = rcnn_scale_features(X_pos{i}, opts.context_norm_mean);
   caches{i} = init_cache(X_pos{i}, keys_pos{i});
 end
 % ------------------------------------------------------------------------
@@ -225,7 +225,7 @@ if isempty(d.context)
   return;
 end
 
-d.context = rcnn_scale_features(d.context, opts.feat_norm_mean);
+d.context = rcnn_scale_features(d.context, opts.context_norm_mean);
 
 neg_ovr_thresh = 0.3;
 
