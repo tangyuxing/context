@@ -23,8 +23,6 @@ if exist([file '_context.mat'], 'file')
   local_context = d.local_context;
   global_context = repmat(global_context, size(local_context, 1), 1);
   d.context = cat(2, global_context, local_context);
-  % remove old global context field and local context field
-  d = refield(d, {'global_context', 'local_context'});
 else
   warning('could not load: %s', file);
   d = create_empty_context();

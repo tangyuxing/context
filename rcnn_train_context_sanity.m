@@ -48,7 +48,7 @@ ip.addParamValue('cache_name', ...
 ip.parse(imdb, varargin{:});
 opts = ip.Results;
 
-opts.net_def_file = './model-defs/imagenet_deploy_batch_256_output_fc8.prototxt';
+opts.net_def_file = './model-defs/spp_output_fc8_1k.prototxt';
 
 conf = rcnn_config('sub_dir', imdb.name);
 
@@ -83,14 +83,15 @@ rcnn_model.training_opts = opts;
 % Get all positive examples
 % We cache only the pool5 features and convert them on-the-fly to
 % fc6 or fc7 as required
-save_file = sprintf('./feat_cache/%s/%s/gt_pos_layer_5_cache.mat', ...
+save_file = sprintf('./feat_cache/%s/%s/gt_pos_feat_context_layer_5_cache.mat', ...
     rcnn_model.cache_name, imdb.name);
 try
   load(save_file);
   fprintf('Loaded saved positives from ground truth boxes\n');
 catch
   [X_pos, keys_pos] = get_positive_pool5_features(imdb, opts);
-  save(save_file, 'X_pos', 'keys_pos', '-v7.3');
+% Do NOT save files
+%   save(save_file, 'X_pos', 'keys_pos', '-v7.3');
 end
 % Init training caches
 caches = {};
