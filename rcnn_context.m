@@ -29,8 +29,14 @@ end
 box_whole_image = [1 1 w h];
 multiscale_boxes = cat(1, multiscale_boxes, box_whole_image);
 
-% use rcnn_features to extract context features
-raw_context = rcnn_features(im, multiscale_boxes, context_model);
+% make sure the boxes fit into the image region
+multiscale_boxes(:, 1) = max(1, multiscale_boxes(:, 1));
+multiscale_boxes(:, 2) = max(1, multiscale_boxes(:, 2));
+multiscale_boxes(:, 3) = min(w, multiscale_boxes(:, 3));
+multiscale_boxes(:, 4) = min(h, multiscale_boxes(:, 4));
+
+% use spp_features to extract context features
+raw_context = spp_features(im, multiscale_boxes, context_model);
 
 % get global context feature for the whole image
 global_context = raw_context(end, :);
